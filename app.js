@@ -17,6 +17,7 @@ data() {
         currentRund:0,
         
         winner:null,
+        logMessage:[],
     }
 },
 
@@ -24,7 +25,13 @@ data() {
 methods: {
     
 
+   
 
+    addLogMessage(who,what,value ){
+
+        this.logMessage.unshift({ actionBy:who, actiontype:what,actionValue:value,});
+    
+    },
    surrender(){
 
     this.winner='monster';
@@ -37,12 +44,14 @@ methods: {
         this.currentRund=0;
         
         this.winner=null;
+        this.logMessage=[];
 
 
     },
 attackToPlayer(){
-    const attackValue=randomMaker(15,8);
+    const attackValue=randomMaker(18,8);
     this.playerHealth-=attackValue;
+     this.addLogMessage('Monster','attack',attackValue);
 
 },
 
@@ -51,18 +60,19 @@ attackTomonster(){
     const attackValue=randomMaker(12,5);
     this.MonsterHealth-=attackValue;
     this.attackToPlayer();
-    
+    this.addLogMessage('player','attack',attackValue);
+ 
 
 },
 
 speciallAttack(){
 
-
     this.currentRund++;
     const attackValue=randomMaker(40,5);
     this.MonsterHealth-=attackValue;
     this.attackToPlayer();
-
+    this.addLogMessage('player','SpecialAttack',attackValue);
+    
 
 },
 
@@ -77,9 +87,12 @@ else{
 this.playerHealth+=healvalue
 
 }
+
+ this.addLogMessage('player','heal',healvalue);
+
 this.attackToPlayer();
 
-}
+},
 
 
 
@@ -152,7 +165,7 @@ this.winner='player';
 }
 
 
-}
+},
 
 
 
